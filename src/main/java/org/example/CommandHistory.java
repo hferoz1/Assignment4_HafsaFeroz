@@ -12,7 +12,6 @@ public class CommandHistory {
     }
 
     public void saveSnapshot(Turtle turtle, Matrix matrix) {
-        // Create a deep copy of the matrix
         Matrix matrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
         for (int i = 0; i < matrix.getHeight(); i++) {
             for (int j = 0; j < matrix.getWidth(); j++) {
@@ -28,14 +27,16 @@ public class CommandHistory {
         if (undoStack.isEmpty()) {
             return false;
         }
-        Matrix matrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
+
+        Matrix currentMatrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
         for (int i = 0; i < matrix.getHeight(); i++) {
             for (int j = 0; j < matrix.getWidth(); j++) {
-                matrixCopy.setCell(j, i, matrix.getCell(j, i));
+                currentMatrixCopy.setCell(j, i, matrix.getCell(j, i));
             }
         }
-        Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), matrixCopy);
+        Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), currentMatrixCopy);
         redoStack.push(currentSnapshot);
+
         Snapshot previousSnapshot = undoStack.pop();
         turtle.restoreState(previousSnapshot.getTurtleState());
         matrix.clear();
@@ -53,14 +54,16 @@ public class CommandHistory {
         if (redoStack.isEmpty()) {
             return false;
         }
-        Matrix matrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
+
+        Matrix currentMatrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
         for (int i = 0; i < matrix.getHeight(); i++) {
             for (int j = 0; j < matrix.getWidth(); j++) {
-                matrixCopy.setCell(j, i, matrix.getCell(j, i));
+                currentMatrixCopy.setCell(j, i, matrix.getCell(j, i));
             }
         }
-        Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), matrixCopy);
+        Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), currentMatrixCopy);
         undoStack.push(currentSnapshot);
+
         Snapshot redoSnapshot = redoStack.pop();
         turtle.restoreState(redoSnapshot.getTurtleState());
         matrix.clear();

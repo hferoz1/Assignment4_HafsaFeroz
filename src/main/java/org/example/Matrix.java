@@ -1,25 +1,25 @@
 package org.example;
 
 public class Matrix {
-    private char[][] graph;
+    private char[][] canvas;
     private int width, height;
 
     public Matrix(int width, int height) {
         this.width = width;
         this.height = height;
-        this.graph = new char[height][width];
+        this.canvas = new char[height][width];
         clear();
     }
 
     public void setCell(int x, int y, char val) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
-            graph[y][x] = val;
+            canvas[y][x] = val;
         }
     }
 
     public char getCell(int x, int y) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
-            return graph[y][x];
+            return canvas[y][x];
         }
         return ' ';
     }
@@ -27,7 +27,7 @@ public class Matrix {
     public void clear() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                graph[i][j] = ' ';
+                canvas[i][j] = ' ';
             }
         }
     }
@@ -45,7 +45,7 @@ public class Matrix {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                sb.append(graph[i][j]);
+                sb.append(canvas[i][j]);
             }
             sb.append('\n');
         }

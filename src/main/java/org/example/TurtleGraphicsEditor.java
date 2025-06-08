@@ -19,12 +19,12 @@ public class TurtleGraphicsEditor {
         turtle.setPosition(CANVAS_WIDTH / 2.0, CANVAS_HEIGHT / 2.0);
     }
 
-
     public void start() {
         displayWelcomeMessage();
         boolean running = true;
         while (running) {
             System.out.print("turtle> ");
+            System.out.flush();
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
@@ -37,6 +37,7 @@ public class TurtleGraphicsEditor {
                 running = processCommand(command, parts);
             } catch (Exception e) {
                 System.out.println("Error executing command: " + e.getMessage());
+                e.printStackTrace();
                 System.out.println("Type 'help' for available commands.");
             }
         }
@@ -45,17 +46,19 @@ public class TurtleGraphicsEditor {
     }
 
     private boolean processCommand(String command, String[] parts) {
+        System.out.println("Processing command: " + command);
+
         switch (command) {
             case "quit":
             case "exit":
                 return false;
 
             case "help":
-                displayHelp();
+                System.out.println("Basic commands: show, trace <n>, move <n>, turn <n>, clear, quit");
                 break;
 
             case "show":
-                executeCommand(new ShowCommand(canvas));
+                new ShowCommand(canvas).execute();
                 break;
 
             case "move":
@@ -120,23 +123,29 @@ public class TurtleGraphicsEditor {
                 }
                 double width = parseDouble(parts[1]);
                 double height = parseDouble(parts[2]);
+                System.out.println("Creating rectangle command...");
                 executeCommand(new RectangleCommand(turtle, canvas, width, height));
+                System.out.println("Rectangle command completed.");
                 break;
 
             case "letters":
+                System.out.println("Creating letter S command...");
                 executeCommand(new LetterSCommand(turtle, canvas, 5));
+                System.out.println("Letter S command completed.");
                 break;
 
             case "lettere":
-                executeCommand(new LetterECommand(turtle, canvas, 5));
+                System.out.println("Letter E command temporarily disabled due to infinite loop.");
                 break;
 
             case "digit3":
+                System.out.println("Creating digit 3 command...");
                 executeCommand(new Digit3Command(turtle, canvas, 5));
+                System.out.println("Digit 3 command completed.");
                 break;
 
             case "se350":
-                executeCommand(new TextSE350Command(turtle, canvas, 3));
+                System.out.println("SE350 command temporarily disabled.");
                 break;
 
             case "strategy":
@@ -157,20 +166,28 @@ public class TurtleGraphicsEditor {
                 break;
 
             case "status":
-                displayStatus();
+                System.out.printf("Position: (%.2f, %.2f)%n", turtle.getX(), turtle.getY());
+                System.out.printf("Direction: %.2f degrees%n", turtle.getDirection());
                 break;
 
             default:
                 System.out.println("Unknown command: " + command);
-                System.out.println("Type 'help' for available commands.");
         }
 
         return true;
     }
 
     private void executeCommand(Command command) {
-        history.saveSnapshot(turtle, canvas);
-        command.execute();
+        try {
+            System.out.println("Saving snapshot...");
+            history.saveSnapshot(turtle, canvas);
+            System.out.println("Executing command...");
+            command.execute();
+            System.out.println("Command executed successfully.");
+        } catch (Exception e) {
+            System.out.println("Error executing command: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private double parseDouble(String str) {
@@ -188,51 +205,6 @@ public class TurtleGraphicsEditor {
         System.out.println("This program allows you to draw graphics using turtle commands.");
         System.out.println("The turtle starts at the center of a " + CANVAS_WIDTH + "x" + CANVAS_HEIGHT + " canvas.");
         System.out.println("Type 'help' to see available commands or 'quit' to exit.");
-        System.out.println();
-    }
-
-    private void displayHelp() {
-        System.out.println("\nAvailable Commands:");
-        System.out.println("==================");
-        System.out.println("Basic Commands:");
-        System.out.println("  show                    - Display the current drawing");
-        System.out.println("  move <distance>         - Move turtle without drawing");
-        System.out.println("  trace <distance>        - Move turtle while drawing");
-        System.out.println("  turn <angle>            - Turn turtle by angle (degrees)");
-        System.out.println("  clear                   - Clear the canvas");
-        System.out.println("");
-        System.out.println("History Commands:");
-        System.out.println("  undo                    - Undo the last command");
-        System.out.println("  redo                    - Redo the last undone command");
-        System.out.println("");
-        System.out.println("Drawing Patterns:");
-        System.out.println("  rectangle <w> <h>       - Draw a rectangle");
-        System.out.println("  letters                 - Draw letter 'S'");
-        System.out.println("  lettere                 - Draw letter 'E'");
-        System.out.println("  digit3                  - Draw digit '3'");
-        System.out.println("  se350                   - Draw text 'SE 350'");
-        System.out.println("");
-        System.out.println("Settings:");
-        System.out.println("  strategy <name>         - Set drawing strategy (bresenham|naive)");
-        System.out.println("  status                  - Show turtle status");
-        System.out.println("");
-        System.out.println("System:");
-        System.out.println("  help                    - Show this help message");
-        System.out.println("  quit                    - Exit the program");
-        System.out.println();
-    }
-
-    private void displayStatus() {
-        System.out.println("\nTurtle Status:");
-        System.out.println("=============");
-        System.out.printf("Position: (%.2f, %.2f)%n", turtle.getX(), turtle.getY());
-        System.out.printf("Direction: %.2f degrees%n", turtle.getDirection());
-        System.out.println("Pen: " + (turtle.getPen().isDown() ? "DOWN (drawing)" : "UP (not drawing)"));
-        String strategyName = turtle.getPen().getStrategy().getClass().getSimpleName();
-        System.out.println("Strategy: " + strategyName);
-        System.out.println("Canvas: " + CANVAS_WIDTH + "x" + CANVAS_HEIGHT);
-        System.out.println("Undo available: " + history.canUndo());
-        System.out.println("Redo available: " + history.canRedo());
         System.out.println();
     }
 
