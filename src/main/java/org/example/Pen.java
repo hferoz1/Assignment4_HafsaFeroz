@@ -13,6 +13,10 @@ public class Pen {
         this.strategy = strategy;
     }
 
+    public DrawingStrategy getStrategy() {
+        return strategy;
+    }
+
     public void down() {
         this.isDown = true;
     }
@@ -31,4 +35,3 @@ public class Pen {
         }
     }
 }
-
