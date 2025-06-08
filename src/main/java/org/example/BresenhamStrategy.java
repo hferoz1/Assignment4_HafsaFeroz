@@ -1,6 +1,6 @@
 package org.example;
 
-public class BresenhamStrategy extends NaiveStrategy {
+public class BresenhamStrategy implements DrawingStrategy {
     @Override
     public void drawLine(Matrix m, double x0, double y0, double x1, double y1) {
         double dx = Math.abs(x1-x0);
