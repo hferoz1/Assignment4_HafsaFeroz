@@ -3,13 +3,17 @@ package org.example;
 public class Turtle {
     private double x;
     private double y;
-    private double direction; // in degrees
+    private double direction;
     private Pen pen;
 
+    /**
+     * sets up
+     * @param pen
+     */
     public Turtle(Pen pen) {
         this.x = 0.0;
         this.y = 0.0;
-        this.direction = 0.0; // facing east
+        this.direction = 0.0;
         this.pen = pen;
     }
 
@@ -36,13 +40,12 @@ public class Turtle {
         double radians = Math.toRadians(direction);
         x += distance * Math.cos(radians);
         y += distance * Math.sin(radians);
-
         pen.drawLine(matrix, oldX, oldY, x, y);
     }
 
     public void turn(double angle) {
         direction += angle;
-        direction = ((direction % 360) + 360) % 360; // normalize to 0-359
+        direction = ((direction % 360) + 360) % 360;
     }
 
     public void setPosition(double x, double y) {

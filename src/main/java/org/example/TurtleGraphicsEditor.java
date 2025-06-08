@@ -189,7 +189,7 @@ public class TurtleGraphicsEditor {
     private void executeCommand(Command command) {
         try {
             System.out.println("Saving snapshot...");
-            history.saveSnapshot(turtle, canvas);
+            history.save(turtle, canvas);
             System.out.println("Executing command...");
             command.execute();
             System.out.println("Command executed successfully.");
@@ -228,4 +228,5 @@ public class TurtleGraphicsEditor {
         TurtleGraphicsEditor editor = new TurtleGraphicsEditor();
         editor.start();
     }
+
 }

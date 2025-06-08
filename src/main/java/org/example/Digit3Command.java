@@ -1,6 +1,13 @@
 package org.example;
 
 public class Digit3Command extends CompositeCommand {
+
+    /**
+     * command to draw the digit "3"
+     * @param turtle turtle for drawing
+     * @param matrix matrix to draw on
+     * @param size size of digit
+     */
     public Digit3Command(Turtle turtle, Matrix matrix, double size) {
         super();
         addCommand(new TraceCommand(turtle, matrix, size));        // Top horizontal line

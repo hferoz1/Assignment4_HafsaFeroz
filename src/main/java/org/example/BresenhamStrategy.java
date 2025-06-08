@@ -2,6 +2,15 @@ package org.example;
 
 public class BresenhamStrategy implements DrawingStrategy {
     @Override
+
+    /**
+     * draws line between two points using Bresenham's algo
+     * @param m the matrix to draw on
+     * @param x0 starting x-coord
+     * @param y0 starting y-coord
+     * @param x1 ending x-coord
+     * @param y1 ending y-coord
+     */
     public void drawLine(Matrix m, double x0, double y0, double x1, double y1) {
         int ix0 = (int)Math.round(x0);
         int iy0 = (int)Math.round(y0);

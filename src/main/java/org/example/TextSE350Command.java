@@ -1,27 +1,34 @@
 package org.example;
 
 public class TextSE350Command extends CompositeCommand {
+
+    /**
+     * command to draw "SE350"
+     * @param turtle turtle for drawing
+     * @param matrix matrix
+     * @param size size of each char
+     */
     public TextSE350Command(Turtle turtle, Matrix matrix, double size) {
         super();
         double spacing = size + 1;
 
-        // Draw S
+        // draw S
         addCommand(new LetterSCommand(turtle, matrix, size));
         addCommand(new MoveCommand(turtle, matrix, spacing));
 
-        // Draw E
+        // draw E
         addCommand(new LetterECommand(turtle, matrix, size));
         addCommand(new MoveCommand(turtle, matrix, spacing * 1.5));
 
-        // Draw 3
+        // draw 3
         addCommand(new Digit3Command(turtle, matrix, size));
         addCommand(new MoveCommand(turtle, matrix, spacing));
 
-        // Draw 5 (same as S)
+        // draw 5
         addCommand(new LetterSCommand(turtle, matrix, size));
         addCommand(new MoveCommand(turtle, matrix, spacing));
 
-        // Draw 0 (rectangle)
+        // draw 0
         addCommand(new RectangleCommand(turtle, matrix, size, size));
     }
 }
