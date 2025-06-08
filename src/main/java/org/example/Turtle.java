@@ -29,7 +29,6 @@ public class Turtle {
         return pen;
     }
 
-
     public void move(Matrix matrix, double distance) {
         double oldX = x;
         double oldY = y;
@@ -43,10 +42,7 @@ public class Turtle {
 
     public void turn(double angle) {
         direction += angle;
-        direction = direction % 360; // keep direction between 0-359
-        if (direction < 0) {
-            direction += 360;
-        }
+        direction = ((direction % 360) + 360) % 360; // normalize to 0-359
     }
 
     public void setPosition(double x, double y) {
@@ -55,10 +51,7 @@ public class Turtle {
     }
 
     public void setDirection(double direction) {
-        this.direction = direction % 360;
-        if (this.direction < 0) {
-            this.direction += 360;
-        }
+        this.direction = ((direction % 360) + 360) % 360;
     }
 
     public TurtleState createSnapshot() {

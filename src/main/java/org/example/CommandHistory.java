@@ -12,15 +12,10 @@ public class CommandHistory {
     }
 
     public void saveSnapshot(Turtle turtle, Matrix matrix) {
-        Matrix matrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
-        for (int i = 0; i < matrix.getHeight(); i++) {
-            for (int j = 0; j < matrix.getWidth(); j++) {
-                matrixCopy.setCell(j, i, matrix.getCell(j, i));
-            }
-        }
+        Matrix matrixCopy = copyMatrix(matrix);
         Snapshot snapshot = new Snapshot(turtle.createSnapshot(), matrixCopy);
         undoStack.push(snapshot);
-        redoStack.clear();
+        redoStack.clear(); // Clear redo stack when new command is executed
     }
 
     public boolean undo(Turtle turtle, Matrix matrix) {
@@ -28,24 +23,15 @@ public class CommandHistory {
             return false;
         }
 
-        Matrix currentMatrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
-        for (int i = 0; i < matrix.getHeight(); i++) {
-            for (int j = 0; j < matrix.getWidth(); j++) {
-                currentMatrixCopy.setCell(j, i, matrix.getCell(j, i));
-            }
-        }
+        // Save current state to redo stack
+        Matrix currentMatrixCopy = copyMatrix(matrix);
         Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), currentMatrixCopy);
         redoStack.push(currentSnapshot);
 
+        // Restore previous state
         Snapshot previousSnapshot = undoStack.pop();
         turtle.restoreState(previousSnapshot.getTurtleState());
-        matrix.clear();
-        Matrix previousMatrix = previousSnapshot.getMatrix();
-        for (int i = 0; i < previousMatrix.getHeight(); i++) {
-            for (int j = 0; j < previousMatrix.getWidth(); j++) {
-                matrix.setCell(j, i, previousMatrix.getCell(j, i));
-            }
-        }
+        restoreMatrix(matrix, previousSnapshot.getMatrix());
 
         return true;
     }
@@ -55,25 +41,36 @@ public class CommandHistory {
             return false;
         }
 
-        Matrix currentMatrixCopy = new Matrix(matrix.getWidth(), matrix.getHeight());
-        for (int i = 0; i < matrix.getHeight(); i++) {
-            for (int j = 0; j < matrix.getWidth(); j++) {
-                currentMatrixCopy.setCell(j, i, matrix.getCell(j, i));
-            }
-        }
+        // Save current state to undo stack
+        Matrix currentMatrixCopy = copyMatrix(matrix);
         Snapshot currentSnapshot = new Snapshot(turtle.createSnapshot(), currentMatrixCopy);
         undoStack.push(currentSnapshot);
 
+        // Restore redo state
         Snapshot redoSnapshot = redoStack.pop();
         turtle.restoreState(redoSnapshot.getTurtleState());
-        matrix.clear();
-        Matrix redoMatrix = redoSnapshot.getMatrix();
-        for (int i = 0; i < redoMatrix.getHeight(); i++) {
-            for (int j = 0; j < redoMatrix.getWidth(); j++) {
-                matrix.setCell(j, i, redoMatrix.getCell(j, i));
+        restoreMatrix(matrix, redoSnapshot.getMatrix());
+
+        return true;
+    }
+
+    private Matrix copyMatrix(Matrix original) {
+        Matrix copy = new Matrix(original.getWidth(), original.getHeight());
+        for (int i = 0; i < original.getHeight(); i++) {
+            for (int j = 0; j < original.getWidth(); j++) {
+                copy.setCell(j, i, original.getCell(j, i));
             }
         }
-        return true;
+        return copy;
+    }
+
+    private void restoreMatrix(Matrix target, Matrix source) {
+        target.clear();
+        for (int i = 0; i < source.getHeight(); i++) {
+            for (int j = 0; j < source.getWidth(); j++) {
+                target.setCell(j, i, source.getCell(j, i));
+            }
+        }
     }
 
     public boolean canUndo() {
