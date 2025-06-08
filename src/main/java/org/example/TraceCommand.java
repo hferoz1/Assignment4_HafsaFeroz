@@ -10,14 +10,9 @@ public class TraceCommand implements Command {
         this.matrix = matrix;
         this.distance = distance;
     }
-
     @Override
     public void execute() {
-        boolean wasPenDown = turtle.getPen().isDown();
         turtle.getPen().down();
         turtle.move(matrix, distance);
-        if (!wasPenDown) {
-            turtle.getPen().up();
-        }
     }
 }

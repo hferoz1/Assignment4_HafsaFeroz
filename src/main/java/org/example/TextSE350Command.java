@@ -4,7 +4,7 @@ public class TextSE350Command extends CompositeCommand {
 
     public TextSE350Command(Turtle turtle, Matrix matrix, double size) {
         super();
-        double spacing = size + 2;
+        double spacing = size + 1;
         addCommand(new LetterSCommand(turtle, matrix, size));
         addCommand(new MoveCommand(turtle, matrix, spacing));
         addCommand(new LetterECommand(turtle, matrix, size));

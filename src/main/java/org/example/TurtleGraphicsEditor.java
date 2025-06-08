@@ -55,6 +55,8 @@ public class TurtleGraphicsEditor {
 
             case "help":
                 System.out.println("Basic commands: show, trace <n>, move <n>, turn <n>, clear, quit");
+                System.out.println("Complex commands: rectangle <w> <h>, letters, lettere, digit3, se350");
+                System.out.println("Other commands: undo, redo, strategy <bresenham|naive>, status");
                 break;
 
             case "show":
@@ -130,22 +132,26 @@ public class TurtleGraphicsEditor {
 
             case "letters":
                 System.out.println("Creating letter S command...");
-                executeCommand(new LetterSCommand(turtle, canvas, 5));
+                executeCommand(new LetterSCommand(turtle, canvas, 3));
                 System.out.println("Letter S command completed.");
                 break;
 
             case "lettere":
-                System.out.println("Letter E command temporarily disabled due to infinite loop.");
+                System.out.println("Creating letter E command...");
+                executeCommand(new LetterECommand(turtle, canvas, 3));
+                System.out.println("Letter E command completed.");
                 break;
 
             case "digit3":
                 System.out.println("Creating digit 3 command...");
-                executeCommand(new Digit3Command(turtle, canvas, 5));
+                executeCommand(new Digit3Command(turtle, canvas, 3));
                 System.out.println("Digit 3 command completed.");
                 break;
 
             case "se350":
-                System.out.println("SE350 command temporarily disabled.");
+                System.out.println("Creating SE350 text command...");
+                executeCommand(new TextSE350Command(turtle, canvas, 2));
+                System.out.println("SE350 text command completed.");
                 break;
 
             case "strategy":
@@ -168,10 +174,13 @@ public class TurtleGraphicsEditor {
             case "status":
                 System.out.printf("Position: (%.2f, %.2f)%n", turtle.getX(), turtle.getY());
                 System.out.printf("Direction: %.2f degrees%n", turtle.getDirection());
+                System.out.println("Pen is " + (turtle.getPen().isDown() ? "down" : "up"));
+                System.out.println("Canvas size: " + CANVAS_WIDTH + "x" + CANVAS_HEIGHT);
                 break;
 
             default:
                 System.out.println("Unknown command: " + command);
+                System.out.println("Type 'help' for available commands.");
         }
 
         return true;
