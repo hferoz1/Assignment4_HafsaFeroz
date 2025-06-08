@@ -11,6 +11,9 @@ public class TurtleGraphicsEditor {
     private CommandHistory history;
     private Scanner scanner;
 
+    /**
+     * creates new turtle graphics editor
+     */
     public TurtleGraphicsEditor() {
         this.canvas = new Matrix(CANVAS_WIDTH, CANVAS_HEIGHT);
         this.turtle = new Turtle(new Pen(new BresenhamStrategy()));
@@ -19,6 +22,9 @@ public class TurtleGraphicsEditor {
         turtle.setPosition(CANVAS_WIDTH / 2.0, CANVAS_HEIGHT / 2.0);
     }
 
+    /**
+     * starts the turtle graphics editor
+     */
     public void start() {
         displayWelcomeMessage();
         boolean running = true;
@@ -45,6 +51,12 @@ public class TurtleGraphicsEditor {
         displayClosingMessage();
     }
 
+    /**
+     * processes user command
+     * @param command command to process
+     * @param parts command parts split by whitespace
+     * @return true if program should continue running
+     */
     private boolean processCommand(String command, String[] parts) {
         System.out.println("Processing command: " + command);
 
@@ -186,6 +198,10 @@ public class TurtleGraphicsEditor {
         return true;
     }
 
+    /**
+     * executes command and saves state to history
+     * @param command command to execute
+     */
     private void executeCommand(Command command) {
         try {
             System.out.println("Saving snapshot...");
@@ -199,6 +215,11 @@ public class TurtleGraphicsEditor {
         }
     }
 
+    /**
+     * parses string to double
+     * @param str string to parse
+     * @return parsed double value
+     */
     private double parseDouble(String str) {
         try {
             return Double.parseDouble(str);
@@ -207,23 +228,31 @@ public class TurtleGraphicsEditor {
         }
     }
 
+    /**
+     * displays welcome message to user
+     */
     private void displayWelcomeMessage() {
-        System.out.println("=========================================");
+        System.out.println("------------------------------------------");
         System.out.println("    Welcome to Turtle Graphics Editor    ");
-        System.out.println("=========================================");
         System.out.println("This program allows you to draw graphics using turtle commands.");
         System.out.println("The turtle starts at the center of a " + CANVAS_WIDTH + "x" + CANVAS_HEIGHT + " canvas.");
         System.out.println("Type 'help' to see available commands or 'quit' to exit.");
         System.out.println();
     }
 
+    /**
+     * displays closing message to user
+     */
     private void displayClosingMessage() {
-        System.out.println("\n=========================================");
         System.out.println("  Thank you for using Turtle Graphics!   ");
-        System.out.println("=========================================");
         System.out.println("Program terminated successfully.");
+        System.out.println("\n------------------------------------------");
     }
 
+    /**
+     * main method to start the program
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         TurtleGraphicsEditor editor = new TurtleGraphicsEditor();
         editor.start();
