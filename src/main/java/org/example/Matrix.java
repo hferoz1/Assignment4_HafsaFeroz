@@ -1,3 +1,8 @@
+/*
+Hafsa Feroz
+SE350 - Section 601
+Assignment 4
+ */
 package org.example;
 
 public class Matrix {
