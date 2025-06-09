@@ -2,10 +2,9 @@ package org.example;
 
 public class NaiveStrategy implements DrawingStrategy {
     @Override
-
     /**
-     * Draws a line between two points
-     * @param m matrix
+     * draws line between two points using naive algo
+     * @param m matrix to draw on
      * @param x0 starting x-coord
      * @param y0 starting y-coord
      * @param x1 ending x-coord
@@ -16,15 +15,13 @@ public class NaiveStrategy implements DrawingStrategy {
         int iy0 = (int)Math.round(y0);
         int ix1 = (int)Math.round(x1);
         int iy1 = (int)Math.round(y1);
-        ix0 = Math.max(0, Math.min(m.getWidth() - 1, ix0));
-        iy0 = Math.max(0, Math.min(m.getHeight() - 1, iy0));
-        ix1 = Math.max(0, Math.min(m.getWidth() - 1, ix1));
-        iy1 = Math.max(0, Math.min(m.getHeight() - 1, iy1));
+
+        // Handle division by zero when x1==x0 (vertical line)
         if (ix1 == ix0) {
             int startY = Math.min(iy0, iy1);
             int endY = Math.max(iy0, iy1);
             for (int y = startY; y <= endY; y++) {
-                if (y >= 0 && y < m.getHeight()) {
+                if (ix0 >= 0 && ix0 < m.getWidth() && y >= 0 && y < m.getHeight()) {
                     m.setCell(ix0, y, '#');
                 }
             }
